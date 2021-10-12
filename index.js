@@ -1,6 +1,5 @@
 import * as Server from './server.js'; 
 import http from "http";
-import url from "url";
 import { parse } from "querystring";
 
 const PORT = 3000;
