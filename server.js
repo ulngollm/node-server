@@ -1,4 +1,4 @@
-import url from "url";
+import Router from "./router.js";
 
 export function requestListener(req, res) {
   console.log(req.url);
@@ -8,7 +8,7 @@ export function requestListener(req, res) {
 
 export const jsonRequestListener = function (req, res) {
   res.setHeader("Content-Type", "application/json");
-  let body = getResponse(req, res);
+  let body = Router.getResponse(req);
   if (!body) {
     body = { result: "Url is not found" };
     res.writeHead(404);
@@ -23,34 +23,3 @@ export function fileRequestListener(req, res) {
   res.writeHead(200).end(`1 sdf dccmcl\n2 nsmer sadx`);
 }
 
-export function demo(request, res) {
-  res.end("Hello Node.js Server!");
-  console.log(request.method);
-  console.log(request);
-  if (request.method == "GET") {
-    let requestUrl = url.parse(request.url, true);
-    console.log(requestUrl.query.param);
-  }
-}
-
-function getResponse(req, res) {
-  const requestUrl = url.parse(req.url);
-  switch (requestUrl.pathname) {
-    case "/books":
-      return [
-        { title: "The Crime", author: "somebody" },
-        { title: "Cookbook", author: "Cooker" },
-      ];
-      break;
-    case "/users":
-      return [
-        { name: "User", group: 4 },
-        { name: "Jane", group: 1 },
-        { name: "Alice", group: 2 },
-      ];
-      break;
-    default:
-      return 0;
-      break;
-  }
-}
