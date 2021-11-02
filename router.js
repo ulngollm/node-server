@@ -1,5 +1,6 @@
-import Url from "url";
+import Url  from "url";
 import UserController from "./controller/UserController.js";
+import GroupController from "./controller/GroupController.js";
 
 export default class Router {
   static routes = [
@@ -11,14 +12,27 @@ export default class Router {
       route: /\/users\/(\d*)/,
       callback: UserController.findOneById,
     },
+    {
+      route: /\/groups\/?$/,
+      callback: GroupController.getList,
+    },
+    {
+      route: /\/groups\/(\d*)/,
+      callback: GroupController.findOneById,
+    },
   ];
 
   static getResponse(req) {
     const requestUrl = Url.parse(req.url);
-    const route = this.getRoute(requestUrl.pathname);
-    const callback = this.getAction(route, requestUrl.pathname);
-    const body = callback();
-    return body;
+    console.log(requestUrl);
+    const endpoint = requestUrl.pathname;
+    const route = this.getRoute(endpoint);
+    if(route){
+      const callback = this.getAction(route, endpoint);
+      const body = callback();
+      return body;
+    }
+    else return;
   }
 
   static getRoute(url) {
